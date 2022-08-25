@@ -21,6 +21,7 @@ export interface generatePDFOptions {
   waitForRender: number;
   headerTemplate: string;
   footerTemplate: string;
+  stopAtUrl: string;
 }
 
 export async function generatePDF({
@@ -41,6 +42,7 @@ export async function generatePDF({
   waitForRender,
   headerTemplate,
   footerTemplate,
+  stopAtUrl,
 }: generatePDFOptions): Promise<void> {
   const browser = await puppeteer.launch({ args: puppeteerArgs });
   const page = await browser.newPage();
@@ -96,6 +98,16 @@ export async function generatePDF({
       } else {
         contentHTML += html;
         console.log(chalk.green('Success'));
+      }
+
+      if (nextPageURL == stopAtUrl) {
+        console.log(
+          chalk.green(
+            `StopAtUrl = ${nextPageURL}.  No further pages will be processed`,
+          ),
+        );
+        nextPageURL = '';
+        continue;
       }
 
       // Find next page url before DOM operations

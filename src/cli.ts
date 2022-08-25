@@ -49,6 +49,10 @@ program
   .option('--waitForRender <timeout>', 'wait for document render')
   .option('--headerTemplate <html>', 'html template for page header')
   .option('--footerTemplate <html>', 'html template for page footer')
+  .option(
+    '--stopAtUrl <url>',
+    'Url of the last page to prevent generating further page links',
+  )
   .action((options: generatePDFOptions) => {
     generatePDF(options)
       .then(() => {
